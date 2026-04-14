@@ -1,25 +1,32 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace LinqExpressionBuilder
 {
-    public class ExpressionBuilderHelper
+    public static class ExpressionBuilderHelper
     {
         public static List<SearchFilter> ChangeFilterValueType<T>(List<SearchFilter> searchFilters)
         {
-            var propType = typeof(T).GetProperties();
+            if (searchFilters == null) throw new ArgumentNullException(nameof(searchFilters));
+
+            var propTypes = typeof(T).GetProperties();
             foreach (var item in searchFilters)
             {
-                item.Value = Convert.ChangeType(item.Value.ToString(), propType.Where(p => p.Name == item.PropertyName).FirstOrDefault().PropertyType);
+                var prop = propTypes.FirstOrDefault(p => p.Name == item.PropertyName)
+                    ?? throw new ArgumentException($"Property '{item.PropertyName}' not found on type '{typeof(T).Name}'.");
+
+                item.Value = Convert.ChangeType(item.Value?.ToString(), prop.PropertyType);
             }
             return searchFilters;
         }
+
         public static string GetPropertyName<T>(Expression<Func<T>> propertyLambda)
         {
-            var body = propertyLambda.Body as MemberExpression;
+            if (propertyLambda.Body is not MemberExpression body)
+                throw new ArgumentException("Expression must be a member expression.", nameof(propertyLambda));
+
             return body.Member.Name;
         }
     }

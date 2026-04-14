@@ -7,6 +7,7 @@ namespace LinqExpressionBuilder
     public enum Operation
     {
         Equals,
+        NotEquals,
         GreaterThan,
         LessThan,
         GreaterThanOrEqual,
@@ -14,5 +15,11 @@ namespace LinqExpressionBuilder
         Contains,
         StartsWith,
         EndsWith
+    }
+
+    public enum Connector
+    {
+        And,
+        Or
     }
 }

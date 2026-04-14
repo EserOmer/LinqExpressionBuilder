@@ -9,5 +9,6 @@ namespace LinqExpressionBuilder
         public string PropertyName { get; set; }
         public Operation Operation { get; set; }
         public object Value { get; set; }
+        public Connector Connector { get; set; } = Connector.And;
     }
 }
