@@ -24,7 +24,7 @@ namespace LinqExpressionBuilder
 
         public static string GetPropertyName<T>(Expression<Func<T>> propertyLambda)
         {
-            if (propertyLambda.Body is not MemberExpression body)
+            if (!(propertyLambda.Body is MemberExpression body))
                 throw new ArgumentException("Expression must be a member expression.", nameof(propertyLambda));
 
             return body.Member.Name;

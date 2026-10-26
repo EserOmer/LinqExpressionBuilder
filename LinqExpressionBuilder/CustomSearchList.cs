@@ -14,7 +14,8 @@ namespace LinqExpressionBuilder
                 var value = typeof(T).GetProperty(propName)?.GetValue(entity);
                 if (value == null) continue;
 
-                customOperation?.TryGetValue(propName, out var op);
+                Operation op = default;
+                customOperation?.TryGetValue(propName, out op);
                 searches.Add(new SearchFilter
                 {
                     Operation = op,
